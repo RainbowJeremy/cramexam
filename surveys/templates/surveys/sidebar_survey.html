@@ -1,0 +1,29 @@
+{% load crispy_forms_tags %}
+{% block sidebar %}
+<div class="blogroll" data-aos="flip-up" data-aos-delay="200">
+    <form id="surveyForm">
+      {% csrf_token %}
+      {{ survey|crispy }}
+      <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    </form>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#surveyForm").submit(function(event){
+        event.preventDefault();
+        let serializedDSurvey = $(this).serialize();
+        
+        let surveyFormUrl = "{% url 'surveys:submit_survey' %}";
+        $.ajax({                                                                                                                           
+            type:"POST",                                                                                                                    
+            url: surveyFormUrl,                                                                                                   
+            data: serializedDSurvey,                                                                                  
+            success: function(response){
+                alert("survey posted");                                                                                         
+            },                                                                                                                             
+        });
+    })
+});
+</script>
+{% endblock %}
