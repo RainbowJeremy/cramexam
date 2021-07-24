@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for object in objects %}
+
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.text }}</p>
+    <p>Published: {{ object.date|date }}</p>
+
+{% endfor %}
+{% endblock %}
