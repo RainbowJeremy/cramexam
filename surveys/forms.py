@@ -3,9 +3,10 @@ from django.forms.widgets import RadioSelect
 from .models import Survey, Newsletter
 
 class SurveyModelForm(forms.ModelForm):
+    answer = forms.CharField(widget=forms.Textarea(attrs={ 'class':'survey-textarea'}))
     def __init__(self, *args, **kwargs):
         super(SurveyModelForm, self).__init__(*args, **kwargs)
-        #self.fields['answer'].label = self
+        self.fields['answer'].label = ""
 
     class Meta:
         model = Survey

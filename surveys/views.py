@@ -1,4 +1,3 @@
-from mcqgenerator.views import question_bank
 from django.shortcuts import render, redirect
 from .forms import SurveyModelForm, NewsletterModelForm
 from django.http import HttpResponse
@@ -40,10 +39,10 @@ def get_survey_dict(index=None):
     
     elif isinstance(index, int):
         index = [index]
-
-    question = Survey.objects.filter(id__in=index)
+    
+    question = Survey.objects.filter(id__in=index)[0]
     form = SurveyModelForm(instance= question)
 
-    survey_dict = {'question':question, 'form':form}
+    survey_dict = {'question':question, 'input':form}
     return survey_dict
     

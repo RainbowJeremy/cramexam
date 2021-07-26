@@ -5,7 +5,6 @@ from django.template.defaultfilters import default, slugify
 
 class Survey(models.Model):
     title = models.CharField(default='hello world', max_length=50)
-    #placeholder = models.CharField(default='hello world', max_length=50)
     date = models.DateField(auto_now_add=True)
     slug = models.SlugField(null=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) #make sure to make an anonymous user to reference.

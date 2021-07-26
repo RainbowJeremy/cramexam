@@ -1,10 +1,12 @@
 {% load crispy_forms_tags %}
 {% block sidebar %}
+
 <div class="blogroll" data-aos="flip-up" data-aos-delay="200">
+    <h5>{{ survey_dict.question }}</h5>
     <form id="surveyForm">
       {% csrf_token %}
-      {{ survey|crispy }}
-      <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      {{ survey_dict.input|crispy }}
+      <button type="submit" class="btn btn-primary m-2">Submit</button>
     </form>
 </div>
 

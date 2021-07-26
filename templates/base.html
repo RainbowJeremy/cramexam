@@ -56,7 +56,9 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white  border-bottom p-1">
-        <a class="brand-holder ml-5 m-0 p-0 " href="{% url 'mcqgenerator:file_drop' %}"><img src="{% static 'logo/brandred-removebg.png' %}"  class="brand-logo"></a>
+        <a class="brand-holder ml-5 m-0 p-0 " href="{% url 'mcqgenerator:file_drop' %}">
+          <img src="{% static 'logo/brandred-removebg.png' %}"  class="brand-logo">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -65,24 +67,28 @@
             <li class="nav-item intentional-empty-space"></li>
             <li class="nav-item ">
               <ul class="d-flex flex-row align-items-center mx-auto shift">
-                <li class="nav-item active nav-option">
-                  <a class="nav-link main-link active " id="qbank-nav" ><span class="sr-only">(current)</span>Question Bank</a>
-                  <!--<button class="btn"  >Question Bank</button>-->
+                <li class="nav-item nav-option">
+                  <a class="nav-link main-link " id="qbank-nav" >
+                    <span class="sr-only">(current)</span>
+                      Question Bank
+                  </a>
                 </li>
-                <li class="nav-item active nav-option">
-                  <a class="nav-link main-link" ><span class="sr-only">(current)</span>Blog</a>
-                  <!--<button class="btn" id="qbank-nav" >Blog</button>-->
+                <li class="nav-item nav-option">
+                  <a class="nav-link main-link" >
+                    <span class="sr-only">(current)</span>
+                      Blog
+                  </a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item active nav-option">
+                <li class="nav-item nav-option">
                   <a class="nav-link main-link" href="{% url 'users:logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li class="nav-item active nav-option">
-                  <a class="nav-link main-link" href="{% url 'users:login' %}">Login</a>
+                  <a class="nav-link main-link" id="loginNav">Login</a>
                 </li>
                 <li class="nav-item active nav-option">
-                  <a class="nav-link main-link" href="{% url 'users:register' %}">Register</a>
+                  <a class="nav-link main-link" id="registerNav">Register</a>
                 </li>
                 {% endif %}
               </ul>
@@ -115,8 +121,6 @@
       </nav>
 
 
-     
-
       {% if messages %}
         <ul id="messages">
             {% for message in messages %}
@@ -129,36 +133,75 @@
       <!-- Button trigger modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="registerModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Sign In</h5>
+        <h5 class="modal-title" id="registerModalLongTitle">Register</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <form id="register_form" class="needs-validation" novalidate>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="registerInputEmail1">Username</label>
+            <input name="username" type="text" class="form-control" id="registerInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+          </div>
+          <div class="form-group">
+            <label for="registerInputPassword1">Password</label>
+            <input name="password1" type="password" class="form-control" id="registerInputPassword1" placeholder="Password">
+
+          </div>
+          <div class="form-group">
+            <label for="registerInputPassword1">Confirm Password</label>
+            <input name="password2" type="password" class="form-control" id="registerInputPassword2" placeholder="Password">
+          </div>    
+          <div id="registerFeedback">
+          </div>
+          <div class="modal-footer">
+            <a id="toLogin"  class="change-modal mr-2">Have an account? Login here</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" id="register" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLongTitle">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
         <form id="login_form" class="needs-validation" novalidate>
           {% csrf_token %}
           <div class="form-group">
             
-            <label for="exampleInputEmail1">Username</label>
-            <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            
+            <label for="loginInputEmail1">Username</label>
+            <input name="username" type="text" class="form-control" id="loginInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">            
             
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input name="password" type="password" class="form-control" id="loginInputPassword1" placeholder="Password">
             <div class="invalid-feedback">
               Username or password is incorrect.
             </div>
-          </div>    
+          </div> 
+    
           <input id="intent" name="intent" type="hidden" value="">
 
           <div class="modal-footer">
+            <a id="toRegister" class="change-modal mr-2">Need an account? Sign Up</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" id="signIn" class="btn btn-primary">Submit</button>
           </div>
@@ -168,6 +211,8 @@
     </div>
   </div>
 </div>
+
+
 
     <main style="background-color: #ecf0f3;">
     {% block body %}
@@ -183,7 +228,7 @@
           </div>
 
           
-          <div class="footer-third" data-aos="fade-left" data-aos-delay="200">
+          <div class="footer-third" data-aos="fade-right" data-aos-delay="200">
             <h3>Contact</h3>
             <ul class="contact-info">
               <li>
@@ -194,7 +239,7 @@
               </li>
             </ul>
           </div>
-          <div class="footer-third" data-aos="fade-right" data-aos-delay="200">
+          <div class="footer-third" data-aos="fade-left" data-aos-delay="200">
             <h3>Newsletter</h3>
             <form method="POST" id="newsletter_form">
               {% csrf_token %}
@@ -255,8 +300,6 @@
               event.preventDefault()
               event.stopPropagation()
             }
-
-
             //form.classList.add('was-validated');
             form.querySelectorAll("div input").forEach(function(node){
                 node.classList.add("is-invalid");
@@ -284,7 +327,7 @@
               }
               if (unauthorized){
                 $('input[name="intent"]').val(qbankUrl);
-                $("#exampleModalCenter").modal('toggle');
+                $("#loginModalCenter").modal('toggle');
               } else {
                 window.location.href = qbankUrl;
               }
@@ -292,12 +335,27 @@
         })
 
       })
+  
+    $("#loginNav").click(function(){
+      $("#loginModalCenter").modal('toggle');
+    });
+    $("#toLogin").click(function(){
+      $("#registerModalCenter").modal('toggle');
+      $("#loginModalCenter").modal('toggle');
+    });
+
+
+    $("#registerNav").click(function(){
+      $("#registerModalCenter").modal('toggle');
+    });
+    $("#toRegister").click(function(){
+      $("#loginModalCenter").modal('toggle');
+      $("#registerModalCenter").modal('toggle');
+    });
 
   var signInUrl = "{% url 'users:ajax_login' %}";
-
     $("#login_form").submit( function (event) {
       event.preventDefault();
-      var form = $(this);
       let serializedData = $(this).serialize();
       
       $.ajax({                                                                                                                           
@@ -314,6 +372,28 @@
       });
   })
 
+  var registerUrl = "{% url 'users:ajax_register' %}"; 
+  $("#register_form").submit( function (event) {
+      event.preventDefault();
+      let serializedData = $(this).serialize();
+      
+      $.ajax({                                                                                                                           
+          type:"POST",                                                                                                                    
+          url: registerUrl,                                                                                                   
+          data: serializedData,                                                                                  
+          success: function(response){
+            if(response.success == "true") {
+              console.log("daedfse");  // change to general case 
+              location.reload();
+            } else {
+              
+              document.getElementById("registerFeedback").innerHTML = response.message;
+
+            }                                                                                           
+          },                                                                                                                             
+      });
+  })
+
   var newsletterUrl = "{% url 'surveys:post_newsletter_email' %}";
 
   $("#newsletter_form").submit( function (event) {
@@ -324,7 +404,6 @@
               type: 'POST',
               url: newsletterUrl,
               data: newsletterData, 
-
               success: function (response) {
                   alert("newslteter success");
               },
@@ -334,12 +413,9 @@
 
               }
 
-            
           })
-          });
-
-  
-        })
+      });
+})
 </script>
 
 

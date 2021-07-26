@@ -17,6 +17,7 @@ from django.contrib import messages
 from blogs.models import Article
 from surveys.models import Survey
 from surveys.forms import SurveyModelForm
+from surveys.views import get_survey_dict
 
 from django.core.paginator import Paginator
 
@@ -63,9 +64,10 @@ def file_drop(request):
     paginator = Paginator(article_list, 2) # Show 25 contacts per page.
     page_number = request.GET.get('page')
     articles = paginator.get_page(page_number)
-    survey_question = Survey.objects.all()[0]
-    survey = SurveyModelForm(instance=survey_question)
-    return render(request, 'file_drop.html', {'form': form, 'articles': articles, 'survey': survey})
+    
+
+    survey_dict  = get_survey_dict(index=1)
+    return render(request, 'file_drop.html', {'form': form, 'articles': articles, 'survey_dict': survey_dict})
 
 ###########################
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls.base import reverse
 from .forms import ProfileForm, UserUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
@@ -42,11 +43,43 @@ def ajax_login(request):
             response_data['success'] = 'false'
             response_data['message'] = 'You messed up'  
 
-         
-
         return HttpResponse(json.dumps(response_data), content_type="application/json")  
 
 
+
+def ajax_register(request):
+    if request.method == 'POST':                      
+        response_data = {}
+        print(request.POST)                                                                                                                                                                                     
+        register_form = UserCreationForm(request.POST)
+        if register_form.is_valid():
+            print("suvcdsddbsdvs")                                                                                                           
+            register_form.save()
+            username = register_form.cleaned_data.get('username')
+            messages.success(request, f'Account Created for {username}')
+            response_data['success'] = 'true'
+
+            username = register_form.cleaned_data.get('username')
+            password1 = register_form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password1)
+            if user is not None:
+                login(request, user) 
+                response_data['message'] = 'You"re logged in'
+            else: 
+                print('login failed')
+
+
+
+
+        else:
+            print("faileuer"+ str(register_form._errors))
+            errors = []
+            for err in register_form.errors.values():
+                errors.append(err) 
+            response_data['success'] = 'false'
+            response_data['message'] = errors
+           
+        return HttpResponse(json.dumps(response_data), content_type="application/json") 
 
 @login_required
 def profile(request):
